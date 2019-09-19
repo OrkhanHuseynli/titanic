@@ -3,7 +3,7 @@ from tornado.ioloop import IOLoop
 from tornado.options import define, options
 from tornado.web import Application
 
-from handlers.upload_handler import UploadHandler
+from modules.handlers.upload_handler import UploadHandler
 
 define('port', default=8888, help='port to listen on')
 
