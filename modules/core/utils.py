@@ -1,6 +1,7 @@
 import os
 from tempfile import gettempdir
-
+from hashlib import sha256
+import base64
 
 class Utils:
     UPLOADS_FOLDER = "TitanicApp/uploads"
@@ -20,6 +21,15 @@ class Utils:
         return file
 
     @staticmethod
+    def read_file(file_name, file_dir):
+        file_path = os.path.join(gettempdir(), file_dir, file_name)
+        return open(file_path, "rb")
+
+    @staticmethod
     def remove_file(file_path):
         if os.path.exists(file_path):
             os.remove(file_path)
+
+    @staticmethod
+    def get_hashed_name(file_name):
+        return sha256(file_name.encode("UTF-8")).hexdigest()
