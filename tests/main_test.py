@@ -29,10 +29,10 @@ class TestApp(AsyncHTTPTestCase):
         file_name = Utils.get_hashed_name("titanic.csv")
         file_name_with_ext = file_name + ".csv"
         file = Utils.read_file(file_name_with_ext, Utils.UPLOADS_FOLDER)
-        expected_file_path =  os.path.join(gettempdir(), Utils.UPLOADS_FOLDER, file_name_with_ext)
+        expected_file_path = Utils.get_stored_file_path("titanic.csv", Utils.UPLOADS_FOLDER)
         self.assertEqual(expected_file_path, file.name)
         file.close()
-        Utils.remove_file(expected_file_path)
+        Utils.___remove_file___(expected_file_path)
 
 
     @staticmethod

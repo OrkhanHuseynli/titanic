@@ -17,4 +17,4 @@ class TestUtils(TestCase):
                 file = Utils.read_file(file_name, Utils.UPLOADS_FOLDER)
                 self.assertEqual(file.name, os.path.join(gettempdir(), Utils.UPLOADS_FOLDER, file_name))
                 file.close()
-            Utils.remove_file(file.name)
+            Utils.___remove_file___(file.name)
