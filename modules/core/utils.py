@@ -11,13 +11,12 @@ class Utils:
             os.makedirs(tmp)
 
     @staticmethod
-    def write_file(file_name, file_content, file_dir):
+    def write_file(file_name, content, file_dir):
         Utils.create_dir(file_dir)
         file_path = os.path.join(gettempdir(), file_dir, file_name)
         # if not os.path.exists(file_path):
-        file = open(file_path, "w")
-        file.write(file_content)
-        file.close()
+        with open(file_path, "wb") as file:
+            file.write(content)
         return file
 
     @staticmethod

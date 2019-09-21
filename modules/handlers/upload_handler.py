@@ -5,7 +5,7 @@ from abc import ABC
 import tornado.ioloop
 from tornado.web import RequestHandler
 
-__UPLOADS__ = "uploads/"
+from modules.core.utils import Utils
 
 class UploadHandler(RequestHandler):
     def get(self):
@@ -16,6 +16,5 @@ class UploadHandler(RequestHandler):
         file_name = file_info['filename']
         extn = os.path.splitext(file_name)[1]
         cname = str(uuid.uuid4()) + extn
-        fh = open(__UPLOADS__ + cname, 'w')
-        fh.write(file_info['body'])
-        self.finish(cname + " is uploaded!! Check %s folder" % __UPLOADS__)
+        Utils.write_file(cname, file_info['body'], Utils.UPLOADS_FOLDER)
+        self.finish(cname + " is uploaded!! Check %s folder" % Utils.UPLOADS_FOLDER)
