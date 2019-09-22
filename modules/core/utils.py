@@ -3,6 +3,8 @@ from tempfile import gettempdir
 from hashlib import sha256
 import base64
 
+import pandas as pd
+
 
 class Utils:
     UPLOADS_FOLDER = os.path.join("TitanicApp", "uploads")
@@ -47,3 +49,8 @@ class Utils:
         hashed_file_name = Utils.get_hashed_name(file_name)
         hashed_file_name_with_ext = hashed_file_name + ext
         return os.path.join(gettempdir(), file_dir, hashed_file_name_with_ext)
+
+    @staticmethod
+    def read_dataset(file_name):
+        file_path = Utils.get_stored_file_path(file_name, Utils.UPLOADS_FOLDER)
+        return pd.read_csv(file_path)
