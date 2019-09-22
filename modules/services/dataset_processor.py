@@ -1,26 +1,30 @@
+import array
 import os
+from typing import Any, Tuple
 
+from numpy import ndarray
 import numpy as np
 import pandas as pd
+from pandas import DataFrame
 
 from modules.core.utils import Utils
 
 
 class DatasetProcessor:
-    def __init__(self, dataset):
+    def __init__(self, dataset: DataFrame):
         self.dataset = dataset
 
     def return_columns(self):
         return self.dataset.columns
 
-    def get_dataset(self):
+    def get_dataset(self) -> DataFrame:
         return self.dataset
 
     def normalize(self):
         self.dataset = (self.dataset - self.dataset.mean()) / self.dataset.std()
         return self
 
-    def create_matricies_and_theta(self, array_of_X_col, y_column_index):
+    def create_matricies_and_theta(self, array_of_X_col: list, y_column_index: int) -> Tuple[ndarray, Any, ndarray]:
         array_of_X_col.append(y_column_index)
         full_array_of_variables = array_of_X_col.copy()
         self.transform_indicies_to_colnames(full_array_of_variables)
@@ -38,7 +42,7 @@ class DatasetProcessor:
         # iters = 1000
         return X, y, theta
 
-    def transform_indicies_to_colnames(self, indices):
+    def transform_indicies_to_colnames(self, indices: list) -> list:
         for i in range(len(indices)):
             indices[i] = self.dataset.columns[indices[i]]
         return indices

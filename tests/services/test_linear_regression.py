@@ -3,7 +3,6 @@ from unittest import TestCase
 import numpy as np
 import pandas as pd
 
-from modules.core.utils import Utils
 from modules.services.dataset_processor import DatasetProcessor
 from modules.services.linear_regression import LinearRegression
 
@@ -18,6 +17,7 @@ class TestLinearRegression(TestCase):
         cost = lin_reg.compute_cost(X, y, theta)
         expected_cost = 0.48054910410767177
         self.assertEqual(expected_cost, cost)
+        lin_reg.score()
 
     def test_gradient_descent(self):
         alpha = 0.01
@@ -25,7 +25,10 @@ class TestLinearRegression(TestCase):
         array_of_X_col, y_column_index = [0, 1], 2
         data_processor, lin_reg = self.__get_data_processor_and_lin_reg__(array_of_X_col, y_column_index)
         gd, cost = lin_reg.gradient_descent(alpha, iterations)
+        print("gradient decent: ")
         print(gd)
+        print("cost: ")
+        print(cost)
         X_, y_, theta_ = data_processor.create_matricies_and_theta([0, 1], 2)
         final_cost = lin_reg.compute_cost(X_, y_, gd)
         print(final_cost)
@@ -40,3 +43,6 @@ class TestLinearRegression(TestCase):
         data_processor.normalize()
         lin_reg = LinearRegression(data_processor.get_dataset(), array_of_X_col, y_column_index)
         return data_processor, lin_reg
+
+
+# y_pred = model.intercept_ + model.coef_ * x
