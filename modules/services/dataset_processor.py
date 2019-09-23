@@ -46,3 +46,9 @@ class DatasetProcessor:
         for i in range(len(indices)):
             indices[i] = self.dataset.columns[indices[i]]
         return indices
+
+#   Tuple[ndarray, Any, ndarray, Any]
+    def __split_dataset__(self, data_frame: DataFrame, training_size: int)-> Tuple[DataFrame, DataFrame]:
+        split_index = round(training_size * len(data_frame))
+        training_frame, testing_frame = np.split(data_frame, [split_index], 0)
+        return training_frame, testing_frame
