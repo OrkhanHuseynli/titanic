@@ -3,5 +3,9 @@ import abc
 
 class Trainer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def get_employee(self, company_name, id):
+    def train(self, dataset):
+        pass
+
+    @abc.abstractmethod
+    def predict(self, dataset):
         pass

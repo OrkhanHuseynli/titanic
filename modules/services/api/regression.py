@@ -1,7 +1,8 @@
 import abc
-from typing import Any
+from typing import Any, Tuple
 
-from numpy import ndarray
+from numpy import ndarray, np
+
 
 class Regression(metaclass=abc.ABCMeta):
     # intercept_
@@ -16,7 +17,7 @@ class Regression(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def predict(self, x):
+    def predict(self, x) -> ndarray:
         pass
 
     @abc.abstractmethod
@@ -24,5 +25,5 @@ class Regression(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def gradient_descent(self, alpha: int, iterations: int):
+    def gradient_descent(self, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         pass

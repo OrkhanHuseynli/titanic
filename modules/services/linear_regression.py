@@ -12,6 +12,10 @@ from modules.services.dataset_processor import DatasetProcessor
 
 
 class LinearRegression(Regression):
+    # theta - intercept and coeficient values
+    theta_ = None
+    cost_ = None
+
     def __init__(self, proccessed_dataset: DataFrame, array_of_X_col: list, y_column_index: int):
         self.processed_dataset = proccessed_dataset
         self.array_of_X_col = array_of_X_col
@@ -23,11 +27,14 @@ class LinearRegression(Regression):
         r2 = 1 - (ssr / sst)
         return r2
 
-    def predict(self, x):
-        pass
+    def predict(self, X):
+        # ones = np.ones([X.shape[0], 1])
+        # X = np.concatenate((ones, X), axis=1)
+        return X @ self.theta_.T
 
-    def fit(self, x, y) -> Regression:
-        pass
+    def fit(self, alpha, iterations) -> Regression:
+        self.theta_, self.cost_ = self.gradient_descent(alpha, iterations)
+        return self
 
     def gradient_descent(self, alpha, iterations) -> Tuple[Any, np.ndarray]:
         data_processor = DatasetProcessor(self.processed_dataset)
