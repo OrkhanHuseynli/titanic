@@ -1,17 +1,13 @@
-import array
-import os
 from typing import Any, Tuple
 
 import numpy as np
-import pandas as pd
 from pandas import DataFrame
 
-from modules.core.utils import Utils
-from modules.services.api.regression import Regression
-from modules.services.dataset_processor import DatasetProcessor
+from modules.services.api.estimation_model import EstimationModel
+from modules.core.dataset_processor import DatasetProcessor
 
 
-class LinearRegression(Regression):
+class LinearRegression(EstimationModel):
     # theta - intercept and coeficient values
     theta_ = None
     cost_ = None
@@ -32,13 +28,13 @@ class LinearRegression(Regression):
         # X = np.concatenate((ones, X), axis=1)
         return X @ self.theta_.T
 
-    def fit(self, alpha, iterations) -> Regression:
+    def fit(self, alpha, iterations) -> EstimationModel:
         self.theta_, self.cost_ = self.gradient_descent(alpha, iterations)
         return self
 
-    def gradient_descent(self, alpha, iterations) -> Tuple[Any, np.ndarray]:
+    def gradient_descent(self, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         data_processor = DatasetProcessor(self.processed_dataset)
-        data_processor.normalize()
+        # data_processor.normalize()
         X, y, theta = data_processor.create_matricies_and_theta(self.array_of_X_col, self.y_column_index)
         return self.__gradient_descent__(X, y, theta, alpha, iterations)
 

@@ -1,10 +1,10 @@
 import abc
 from typing import Any, Tuple
 
-from numpy import ndarray, np
+from numpy import ndarray
 
 
-class Regression(metaclass=abc.ABCMeta):
+class EstimationModel(metaclass=abc.ABCMeta):
     # intercept_
     # coef_
     @abc.abstractmethod
@@ -22,8 +22,4 @@ class Regression(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def compute_cost(self, X: ndarray, y: Any, theta: ndarray) -> None:
-        pass
-
-    @abc.abstractmethod
-    def gradient_descent(self, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         pass

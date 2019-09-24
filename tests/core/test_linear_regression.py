@@ -3,8 +3,8 @@ from unittest import TestCase
 import numpy as np
 import pandas as pd
 
-from modules.services.dataset_processor import DatasetProcessor
-from modules.services.linear_regression import LinearRegression
+from modules.core.dataset_processor import DatasetProcessor
+from modules.core.linear_regression import LinearRegression
 
 
 class TestLinearRegression(TestCase):
@@ -29,7 +29,7 @@ class TestLinearRegression(TestCase):
         X_, y_, theta_ = data_processor.create_matricies_and_theta([0, 1], 2)
         final_cost = lin_reg.compute_cost(X_, y_, gd)
         print(final_cost)
-        expected_final_cost = 0.13070336960771892
+        expected_final_cost = 0.1307033696077189
         self.assertEqual(expected_final_cost, final_cost)
 
     def test_gradient_descent2(self):

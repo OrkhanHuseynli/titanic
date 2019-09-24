@@ -2,7 +2,7 @@ from unittest import TestCase
 
 import pandas as pd
 
-from modules.services.dataset_processor import DatasetProcessor
+from modules.core.dataset_processor import DatasetProcessor
 
 
 class TestDatasetProcessor(TestCase):
