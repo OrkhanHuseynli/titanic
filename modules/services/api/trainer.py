@@ -15,3 +15,11 @@ class Trainer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def predict(self, X: ndarray):
         pass
+
+    @abc.abstractmethod
+    def get_coefs(self) -> ndarray:
+        pass
+
+    @abc.abstractmethod
+    def get_cost_matrix(self) -> Any:
+        pass

@@ -9,8 +9,8 @@ from modules.core.dataset_processor import DatasetProcessor
 
 class LinearRegression(EstimationModel):
     # theta - intercept and coeficient values
-    theta_ = None
-    cost_ = None
+    _theta = None
+    _cost_matrix = None
 
     def __init__(self, proccessed_dataset: DataFrame, array_of_X_col: list, y_column_index: int):
         self.processed_dataset = proccessed_dataset
@@ -26,11 +26,17 @@ class LinearRegression(EstimationModel):
     def predict(self, X):
         # ones = np.ones([X.shape[0], 1])
         # X = np.concatenate((ones, X), axis=1)
-        return X @ self.theta_.T
+        return X @ self._theta.T
 
     def fit(self, alpha, iterations) -> EstimationModel:
-        self.theta_, self.cost_ = self.gradient_descent(alpha, iterations)
+        self._theta, self._cost_matrix = self.gradient_descent(alpha, iterations)
         return self
+
+    def get_coefs(self):
+        return self._theta
+
+    def get_cost_matrix(self):
+        return self._cost_matrix
 
     def gradient_descent(self, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         data_processor = DatasetProcessor(self.processed_dataset)
