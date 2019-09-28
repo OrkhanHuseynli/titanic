@@ -2,6 +2,7 @@ from typing import Any
 
 from numpy.core.multiarray import ndarray
 from pandas import DataFrame
+from pip._internal.utils.deprecation import deprecated
 
 from modules.core.dataset_processor import DatasetProcessor
 from modules.core.linear_regression import LinearRegression
@@ -42,6 +43,11 @@ class TrainerService(Trainer):
     def predict(self, X: ndarray):
         self._predicted_outcome = self._model.predict(X)
         return self._predicted_outcome
+
+    @deprecated
+    def predict_on_test_data(self):
+        X = self.testing_frame
+        _predicted_on_test_data = self._model.predict(self.testing_frame)
 
     def __split_dataset__(self, dataset: DataFrame, training_size: int):
         data_processor = DatasetProcessor(dataset)

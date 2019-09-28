@@ -44,17 +44,27 @@ class TestLinearRegression(TestCase):
         final_cost = lin_reg.compute_cost(X_, y_, gd)
         print(final_cost)
 
-    def test_predict(self):
+    # def test_predict(self):
+    #     alpha = 0.01
+    #     iterations = 1000
+    #     array_of_X_col, y_column_index = [0, 1], 2
+    #     data_processor, lin_reg = self.__get_data_processor_and_lin_reg__("training_data.csv", array_of_X_col, y_column_index)
+    #     lin_reg.fit(alpha, iterations)
+    #     data_processor_, lin_reg_ = self.__get_data_processor_and_lin_reg__("testing_data.csv", [0, 1], 2)
+    #     X_, y_, theta_ = data_processor_.create_matricies_and_theta([0, 1], 2)
+    #     y_pred = lin_reg.predict(X_)
+    #     r2 = lin_reg._score_(y_pred, y_)
+    #     print(r2)
+
+    def test_score(self):
         alpha = 0.01
         iterations = 1000
         array_of_X_col, y_column_index = [0, 1], 2
         data_processor, lin_reg = self.__get_data_processor_and_lin_reg__("training_data.csv", array_of_X_col, y_column_index)
         lin_reg.fit(alpha, iterations)
-        data_processor_, lin_reg_ = self.__get_data_processor_and_lin_reg__("testing_data.csv", [0, 1], 2)
-        X_, y_, theta_ = data_processor_.create_matricies_and_theta([0, 1], 2)
-        y_pred = lin_reg.predict(X_)
-        r2 = lin_reg.score(y_pred, y_)
-        print(r2)
+        expected_score = 0.7329105055842267
+        actual_score = lin_reg.score()
+        self.assertEqual(expected_score, actual_score)
 
     def __get_data_processor_and_lin_reg__(self, file_name, array_of_X_col, y_column_index):
         test_file_path = '../resources/' + file_name

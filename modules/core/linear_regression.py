@@ -16,8 +16,14 @@ class LinearRegression(EstimationModel):
         self.processed_dataset = proccessed_dataset
         self.array_of_X_col = array_of_X_col
         self.y_column_index = y_column_index
+        self._X_actual = None
+        self._y_actual = None
 
-    def score(self, y_, y):
+    def score(self):
+        y_predicted = self.predict(self._X_actual)
+        return self._score_(y_predicted, self._y_actual)
+
+    def _score_(self, y_, y):
         sst = np.sum((y - y.mean()) ** 2)
         ssr = np.sum((y_ - y) ** 2)
         r2 = 1 - (ssr / sst)
@@ -27,6 +33,12 @@ class LinearRegression(EstimationModel):
         # ones = np.ones([X.shape[0], 1])
         # X = np.concatenate((ones, X), axis=1)
         return X @ self._theta.T
+
+    # def predict_on_test_dataset(self):
+    #     data_processor = DatasetProcessor(self.processed_dataset)
+    #     # data_processor.normalize()
+    #     X, y, theta = data_processor.create_matricies_and_theta(self.array_of_X_col, self.y_column_index)
+
 
     def fit(self, alpha, iterations) -> EstimationModel:
         self._theta, self._cost_matrix = self.gradient_descent(alpha, iterations)
@@ -41,8 +53,8 @@ class LinearRegression(EstimationModel):
     def gradient_descent(self, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         data_processor = DatasetProcessor(self.processed_dataset)
         # data_processor.normalize()
-        X, y, theta = data_processor.create_matricies_and_theta(self.array_of_X_col, self.y_column_index)
-        return self.__gradient_descent__(X, y, theta, alpha, iterations)
+        self._X_actual, self._y_actual, theta = data_processor.create_matricies_and_theta(self.array_of_X_col, self.y_column_index)
+        return self.__gradient_descent__(self._X_actual, self._y_actual, theta, alpha, iterations)
 
     def __gradient_descent__(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         cost = np.zeros(iterations)

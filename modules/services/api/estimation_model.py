@@ -5,10 +5,13 @@ from numpy import ndarray
 
 
 class EstimationModel(metaclass=abc.ABCMeta):
-    # intercept_
-    # coef_
+
     @abc.abstractmethod
     def fit(self, x, y) -> Any:
+        pass
+
+    @abc.abstractmethod
+    def score(self) -> float:
         pass
 
     @abc.abstractmethod
@@ -17,10 +20,6 @@ class EstimationModel(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def get_cost_matrix(self) -> Any:
-        pass
-
-    @abc.abstractmethod
-    def score(self, x, y) -> int:
         pass
 
     @abc.abstractmethod
