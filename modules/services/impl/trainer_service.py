@@ -24,15 +24,21 @@ class TrainerService(Trainer):
         self._predicted_outcome = None
         self._cost_matrix = None
         self._model: EstimationModel = None
+        self._score = None
 
     def train(self) -> Trainer:
         self._model: EstimationModel = LinearRegression(self.training_frame, self.array_of_X_col, self.y_column_index)
         # NOTE: in an advanced version of the service
         # optimization model can be customizable
         self._model.fit(self.alpha, self.iterations)
+        self._score = self._model.score()
         self._coeficients = self._model.get_coefs()
         self._cost_matrix = self._model.get_cost_matrix()
         return self
+
+
+    def score(self) -> int:
+        return self._score
 
     def get_coefs(self) -> ndarray:
         return self._coeficients
@@ -44,10 +50,10 @@ class TrainerService(Trainer):
         self._predicted_outcome = self._model.predict(X)
         return self._predicted_outcome
 
-    @deprecated
-    def predict_on_test_data(self):
-        X = self.testing_frame
-        _predicted_on_test_data = self._model.predict(self.testing_frame)
+    # @deprecated
+    # def predict_on_test_data(self):
+    #     X = self.testing_frame
+    #     _predicted_on_test_data = self._model.predict(self.testing_frame)
 
     def __split_dataset__(self, dataset: DataFrame, training_size: int):
         data_processor = DatasetProcessor(dataset)

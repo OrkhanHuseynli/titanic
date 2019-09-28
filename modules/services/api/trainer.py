@@ -13,6 +13,10 @@ class Trainer(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
+    def score(self) -> int:
+        pass
+
+    @abc.abstractmethod
     def predict(self, X: ndarray):
         pass
 

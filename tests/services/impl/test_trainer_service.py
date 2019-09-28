@@ -19,6 +19,18 @@ class TestTrainerService(TestCase):
         print("coeficients : ", service.get_coefs()[0])
         self.assertEqual([0.039826403664998934, 0.9587822599661973, -0.00246734131974181], service.get_coefs()[0].tolist())
 
+
+    def test_score(self):
+        alpha = 0.01
+        iterations = 1000
+        array_of_X_col, y_column_index = [0, 1], 2
+        service: Trainer = TrainerService(self.__get_dataset__("test_data.csv"), array_of_X_col, y_column_index, 0.8,
+                                          alpha, iterations)
+        service.train()
+        actual_score = service.score()
+        expected_score = 0.7615686264521379
+        self.assertEqual(expected_score, actual_score)
+
     def test_predict(self):
         alpha = 0.01
         iterations = 1000
