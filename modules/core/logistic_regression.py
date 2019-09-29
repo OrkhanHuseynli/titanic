@@ -7,32 +7,34 @@ from modules.services.api.estimation_model import EstimationModel
 from modules.core.dataset_processor import DatasetProcessor
 
 
-class LinearRegression(EstimationModel):
+class LogisticRegression(EstimationModel):
     # theta - intercept and coeficient values
     _theta = None
     _cost_matrix = None
 
-    def __init__(self, proccessed_dataset: DataFrame, array_of_X_col: list, y_column_index: int):
+    def __init__(self, proccessed_dataset: DataFrame, array_of_X_col: list, y_column_index: int, verbose):
         self.processed_dataset = proccessed_dataset
         self.array_of_X_col = array_of_X_col
         self.y_column_index = y_column_index
         self._X_actual = None
         self._y_actual = None
+        self.verbose = verbose
 
     def score(self):
         y_predicted = self.predict(self._X_actual)
         return self._score_(y_predicted, self._y_actual)
 
     def _score_(self, y_, y):
-        sst = np.sum((y - y.mean()) ** 2)
+        # calculating the ratio of correct predictions
         ssr = np.sum((y_ - y) ** 2)
-        r2 = 1 - (ssr / sst)
-        return r2
+        accuracy = (y.size - ssr)/y.size
+        return accuracy
 
     def predict(self, X):
-        # ones = np.ones([X.shape[0], 1])
-        # X = np.concatenate((ones, X), axis=1)
-        return X @ self._theta.T
+        return self.__predict_prob(X).round()
+
+    def __predict_prob(self, X):
+        return self._logistic_function(np.dot(X, self._theta.T))
 
     # def predict_on_test_dataset(self):
     #     data_processor = DatasetProcessor(self.processed_dataset)
@@ -41,6 +43,9 @@ class LinearRegression(EstimationModel):
 
 
     def fit(self, alpha, iterations) -> EstimationModel:
+        # data_processor = DatasetProcessor(self.processed_dataset)
+        # self._X_actual, self._y_actual, self._theta = data_processor.create_matricies_and_theta_for_binary_output(self.array_of_X_col, self.y_column_index)
+        # self._theta, self._cost_matrix =self._fit_(self._X_actual, self._y_actual, self._theta, alpha, iterations)
         self._theta, self._cost_matrix = self.gradient_descent(alpha, iterations)
         return self
 
@@ -52,20 +57,44 @@ class LinearRegression(EstimationModel):
 
     def gradient_descent(self, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         data_processor = DatasetProcessor(self.processed_dataset)
-        data_processor.normalize()
         self._X_actual, self._y_actual, theta = data_processor.create_matricies_and_theta(self.array_of_X_col, self.y_column_index)
         return self.__gradient_descent__(self._X_actual, self._y_actual, theta, alpha, iterations)
 
     def __gradient_descent__(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         cost = np.zeros(iterations)
         for i in range(iterations):
-            theta = theta - (alpha / len(X)) * np.sum(X * (X @ theta.T - y), axis=0)
+            # if i==303:
+            #     print("nr")
+            h = self._logistic_function(X @ theta.T)
+            theta = theta - (alpha / len(X)) * np.sum(X * (h - y), axis=0)
             cost[i] = self.compute_cost(X, y, theta)
+            # print("Index ", i)
+            # print(theta[0].tolist()[3])
+            # print(theta)
         return theta, cost
+
+    def _logistic_function(self, z):
+        #sigmoid function
+        return 1 / (1 + np.exp(-z))
 
     def compute_cost(self, X, y, theta) -> int:
         for_sum = np.power(((X @ theta.T) - y), 2)
         return np.sum(for_sum) / (2 * len(X))
+
+
+    def _fit_(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int):
+        for i in range(iterations):
+            z = np.dot(X, theta)
+            h = self._logistic_function(z)
+            gradient = np.dot(X.T, (h - y)) / y.shape[0]
+            theta -= alpha * gradient
+
+            z = np.dot(X, theta)
+            h = self._logistic_function(z)
+            loss = self.compute_cost(h, y)
+            return theta, loss
+    # def compute_cost(self, h, y):
+    #     return (-y * np.log(h) - (1 - y) * np.log(1 - h)).mean()
 
     # def transform_indicies_to_colnames(self, indices):
     #     for i in range(len(indices)):

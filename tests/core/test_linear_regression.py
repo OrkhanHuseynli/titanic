@@ -29,7 +29,7 @@ class TestLinearRegression(TestCase):
         X_, y_, theta_ = data_processor.create_matricies_and_theta([0, 1], 2)
         final_cost = lin_reg.compute_cost(X_, y_, gd)
         print(final_cost)
-        expected_final_cost = 0.1307033696077189
+        expected_final_cost = 0.13070336960771892
         self.assertEqual(expected_final_cost, final_cost)
 
     def test_gradient_descent2(self):
@@ -44,25 +44,13 @@ class TestLinearRegression(TestCase):
         final_cost = lin_reg.compute_cost(X_, y_, gd)
         print(final_cost)
 
-    # def test_predict(self):
-    #     alpha = 0.01
-    #     iterations = 1000
-    #     array_of_X_col, y_column_index = [0, 1], 2
-    #     data_processor, lin_reg = self.__get_data_processor_and_lin_reg__("training_data.csv", array_of_X_col, y_column_index)
-    #     lin_reg.fit(alpha, iterations)
-    #     data_processor_, lin_reg_ = self.__get_data_processor_and_lin_reg__("testing_data.csv", [0, 1], 2)
-    #     X_, y_, theta_ = data_processor_.create_matricies_and_theta([0, 1], 2)
-    #     y_pred = lin_reg.predict(X_)
-    #     r2 = lin_reg._score_(y_pred, y_)
-    #     print(r2)
-
     def test_score(self):
         alpha = 0.01
         iterations = 1000
         array_of_X_col, y_column_index = [0, 1], 2
         data_processor, lin_reg = self.__get_data_processor_and_lin_reg__("training_data.csv", array_of_X_col, y_column_index)
         lin_reg.fit(alpha, iterations)
-        expected_score = 0.7329105055842267
+        expected_score = 0.7329105055842265
         actual_score = lin_reg.score()
         self.assertEqual(expected_score, actual_score)
 
@@ -79,7 +67,7 @@ class TestLinearRegression(TestCase):
         # expected_score = 0.7615686264521379
         # self.assertEqual(expected_score, actual_score)
         data_processor_2 = DatasetProcessor(testing_frame)
-        X_test, y_test,  _ = data_processor_2.create_matricies_and_theta([0, 1], 2)
+        X_test, y_test,  _ = data_processor_2.create_matricies_and_theta_for_binary_output([3, 4, 5], 2)
         y_predicted = lin_reg.predict(X_test)
         test_score = lin_reg._score_(y_predicted, y_test)
         print(test_score)
@@ -96,5 +84,3 @@ class TestLinearRegression(TestCase):
         data_processor = DatasetProcessor(test_dataset)
         data_processor.normalize()
         return data_processor
-
-# y_pred = model.intercept_ + model.coef_ * x
