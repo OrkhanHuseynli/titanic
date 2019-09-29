@@ -1,12 +1,9 @@
 from unittest import TestCase
 
-import numpy as np
 import pandas as pd
 
-from modules.core.dataset_processor import DatasetProcessor
-from modules.core.linear_regression import LinearRegression
 from modules.services.api.trainer import Trainer
-from modules.services.impl.trainer_service import TrainerService
+from modules.services.trainer_service import TrainerService
 
 
 class TestTrainerService(TestCase):

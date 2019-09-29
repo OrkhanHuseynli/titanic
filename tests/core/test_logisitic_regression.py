@@ -31,10 +31,10 @@ class TestLogisticRegression(TestCase):
         expected_score = 0.7810858143607706
         self.assertEqual(expected_score, actual_score)
         data_processor_testing_frame = DatasetProcessor(testing_frame)
-        X_test, y_test, theta_test = data_processor.create_matricies_and_theta_for_binary_output([3, 4, 5, 6, 7], 2)
+        X_test, y_test, theta_test = data_processor_testing_frame.create_matricies_and_theta_for_binary_output([3, 4, 5, 6, 7], 2)
         y_test_predicted = log_reg.predict(X_test)
         test_score = log_reg._score_(y_test_predicted, y_test)
-        test_score_expected = 0.7857142857142857
+        test_score_expected = 0.7902097902097902
         self.assertEqual(test_score_expected, test_score)
 
 

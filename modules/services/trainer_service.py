@@ -2,11 +2,10 @@ from typing import Any
 
 from numpy.core.multiarray import ndarray
 from pandas import DataFrame
-from pip._internal.utils.deprecation import deprecated
 
 from modules.core.dataset_processor import DatasetProcessor
 from modules.core.linear_regression import LinearRegression
-from modules.services.api.estimation_model import EstimationModel
+from modules.core.api.estimation_model import EstimationModel
 from modules.services.api.trainer import Trainer
 
 

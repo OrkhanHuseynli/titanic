@@ -3,7 +3,7 @@ from typing import Any, Tuple
 import numpy as np
 from pandas import DataFrame
 
-from modules.services.api.estimation_model import EstimationModel
+from modules.core.api.estimation_model import EstimationModel
 from modules.core.dataset_processor import DatasetProcessor
 
 
