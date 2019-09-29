@@ -18,7 +18,7 @@ class TestLogisticRegression(TestCase):
         expected_score = 0.9
         self.assertEqual(expected_score, actual_score)
 
-    def test_predict(self):
+    def test_predict_with_binary(self):
         alpha = 0.01
         iterations = 1000
         array_of_X_col, y_column_index = [3, 4, 5, 6, 7], 2
@@ -28,8 +28,15 @@ class TestLogisticRegression(TestCase):
         log_reg.fit(alpha, iterations)
         print(log_reg.get_coefs())
         actual_score = log_reg.score()
-        expected_score = 0.5831873905429071
+        expected_score = 0.7810858143607706
         self.assertEqual(expected_score, actual_score)
+        data_processor_testing_frame = DatasetProcessor(testing_frame)
+        X_test, y_test, theta_test = data_processor.create_matricies_and_theta_for_binary_output([3, 4, 5, 6, 7], 2)
+        y_test_predicted = log_reg.predict(X_test)
+        test_score = log_reg._score_(y_test_predicted, y_test)
+        test_score_expected = 0.7857142857142857
+        self.assertEqual(test_score_expected, test_score)
+
 
     def __get_data_processor__(self, file_name, array_of_X_col, y_column_index):
         test_file_path = '../resources/' + file_name

@@ -57,7 +57,7 @@ class LogisticRegression(EstimationModel):
 
     def gradient_descent(self, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         data_processor = DatasetProcessor(self.processed_dataset)
-        self._X_actual, self._y_actual, theta = data_processor.create_matricies_and_theta(self.array_of_X_col, self.y_column_index)
+        self._X_actual, self._y_actual, theta = data_processor.create_matricies_and_theta_for_binary_output(self.array_of_X_col, self.y_column_index)
         return self.__gradient_descent__(self._X_actual, self._y_actual, theta, alpha, iterations)
 
     def __gradient_descent__(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
