@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 import numpy as np
-from modules.core.logistic_regression import LogisticRegression
 from modules.core.logistic_regression_util import LogisticRegressionUtil
 
 

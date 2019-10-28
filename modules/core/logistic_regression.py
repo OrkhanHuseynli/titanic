@@ -13,20 +13,24 @@ class LogisticRegression(EstimationModel):
     _theta = None
     _cost_matrix = None
 
-    def __init__(self, proccessed_dataset: DataFrame, array_of_X_col: list, y_column_index: int, verbose):
+    def __init__(self, proccessed_dataset: DataFrame, array_of_X_col: list, y_column_index: int, threshold: int):
         self.processed_dataset = proccessed_dataset
         self.array_of_X_col = array_of_X_col
         self.y_column_index = y_column_index
         self._X_actual = None
         self._y_actual = None
-        self.verbose = verbose
+        self.threshold = threshold
 
     def score(self):
         y_predicted = self.predict(self._X_actual)
         return self._score_(y_predicted, self._y_actual)
 
     def predict(self, X):
-        return self.__predict_prob(X).round()
+        # return self.__predict_prob(X).round()
+        Y = self.__predict_prob(X)
+        Y[Y > self.threshold] = 1
+        Y[Y <= self.threshold] = 0
+        return Y
 
     def fit(self, alpha, iterations) -> EstimationModel:
         self._theta, self._cost_matrix = self.gradient_descent(alpha, iterations)
@@ -61,8 +65,6 @@ class LogisticRegression(EstimationModel):
     def __gradient_descent__(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         cost = np.zeros(iterations)
         for i in range(iterations):
-            # if i==303:
-            #     print("nr")
             h = self._logistic_function(X @ theta.T)
             theta = theta - (alpha / len(X)) * np.sum(X * (h - y), axis=0)
             cost[i] = self.compute_cost(X, y, theta)

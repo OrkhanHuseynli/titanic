@@ -10,7 +10,7 @@ from modules.core.logistic_regression import LogisticRegression
 class TestLogisticRegression(TestCase):
 
     def test_score(self):
-        log_reg = LogisticRegression([], [], [], False)
+        log_reg = LogisticRegression([], [], [], 0.5)
         y_ = np.array([0, 1, 0, 1, 0, 0, 1, 0, 1, 0])
         y = np.array([0, 1, 0, 0, 0, 0, 1, 0, 1, 0])
         actual = log_reg._score_(y_, y)
@@ -20,12 +20,12 @@ class TestLogisticRegression(TestCase):
     def test_predict_with_binary(self):
         alpha = 0.01
         iterations = 1000
+        threshold = 0.5
         array_of_X_col, y_column_index = [3, 4, 5, 6, 7], 2
         data_processor = self.__get_data_processor__("titanic.csv")
         training_frame, testing_frame = data_processor.split_dataset(0.8)
-        log_reg = LogisticRegression(training_frame, array_of_X_col, y_column_index, False)
+        log_reg = LogisticRegression(training_frame, array_of_X_col, y_column_index, threshold)
         log_reg.fit(alpha, iterations)
-        print(log_reg.get_coefs())
         actual_score = log_reg.score()
         expected_score = 0.8079710144927537
         self.assertEqual(expected_score, actual_score)
