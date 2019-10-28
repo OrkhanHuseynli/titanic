@@ -60,6 +60,10 @@ class LogisticRegression(EstimationModel):
         self._X_actual, self._y_actual, theta = data_processor.create_matricies_and_theta_for_binary_output(self.array_of_X_col, self.y_column_index)
         return self.__gradient_descent__(self._X_actual, self._y_actual, theta, alpha, iterations)
 
+    def compute_cost(self, X, y, theta) -> int:
+        for_sum = np.power(((X @ theta.T) - y), 2)
+        return np.sum(for_sum) / (2 * len(X))
+
     def __gradient_descent__(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         cost = np.zeros(iterations)
         for i in range(iterations):
@@ -76,11 +80,6 @@ class LogisticRegression(EstimationModel):
     def _logistic_function(self, z):
         #sigmoid function
         return 1 / (1 + np.exp(-z))
-
-    def compute_cost(self, X, y, theta) -> int:
-        for_sum = np.power(((X @ theta.T) - y), 2)
-        return np.sum(for_sum) / (2 * len(X))
-
 
     def _fit_(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int):
         for i in range(iterations):
