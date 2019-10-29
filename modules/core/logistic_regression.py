@@ -13,28 +13,37 @@ class LogisticRegression(EstimationModel):
     _theta = None
     _cost_matrix = None
 
-    def __init__(self, proccessed_dataset: DataFrame, array_of_X_col: list, y_column_index: int, threshold: int):
-        self.processed_dataset = proccessed_dataset
+    def __init__(self, processed_dataset: DataFrame, array_of_X_col: list, y_column_index: int):
+        self.processed_dataset = processed_dataset
         self.array_of_X_col = array_of_X_col
         self.y_column_index = y_column_index
         self._X_actual = None
         self._y_actual = None
-        self.threshold = threshold
 
     def score(self):
-        y_predicted = self.predict(self._X_actual)
+        y_predicted = self.predict(self._X_actual, 0.5)
         return self._score_(y_predicted, self._y_actual)
 
-    def predict(self, X):
+    def predict(self, X: np.ndarray, threshold: float) -> np.ndarray:
         # return self.__predict_prob(X).round()
-        Y = self.__predict_prob(X)
-        Y[Y > self.threshold] = 1
-        Y[Y <= self.threshold] = 0
+        Y = self.__predict_prob__(X)
+        Y[Y > threshold] = 1
+        Y[Y <= threshold] = 0
         return Y
+
+    def calculate_roc_point(self, X_actual: np.ndarray, y_actual: np.ndarray, threshold: int) -> list:
+        y_predicted = self.predict(X_actual, threshold)
+        return LogisticRegressionUtil.calculate_ROC(y_predicted, y_actual)
 
     def fit(self, alpha, iterations) -> EstimationModel:
         self._theta, self._cost_matrix = self.gradient_descent(alpha, iterations)
         return self
+
+    def get_X_actual(self):
+        return self._X_actual
+
+    def get_y_actual(self):
+        return self._y_actual
 
     def get_coefs(self):
         return self._theta
@@ -59,13 +68,13 @@ class LogisticRegression(EstimationModel):
                                                              confusion_matrix[1][0], confusion_matrix[1][1])
         return accuracy
 
-    def __predict_prob(self, X):
-        return self._logistic_function(np.dot(X, self._theta.T))
+    def __predict_prob__(self, X):
+        return self._logistic_function_(np.dot(X, self._theta.T))
 
     def __gradient_descent__(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int) -> Tuple[Any, np.ndarray]:
         cost = np.zeros(iterations)
         for i in range(iterations):
-            h = self._logistic_function(X @ theta.T)
+            h = self._logistic_function_(X @ theta.T)
             theta = theta - (alpha / len(X)) * np.sum(X * (h - y), axis=0)
             cost[i] = self.compute_cost(X, y, theta)
             # print("Index ", i)
@@ -73,18 +82,6 @@ class LogisticRegression(EstimationModel):
             # print(theta)
         return theta, cost
 
-    def _logistic_function(self, z):
+    def _logistic_function_(self, z):
         # sigmoid function
         return 1 / (1 + np.exp(-z))
-
-    def _fit_(self, X: Any, y: Any, theta: Any, alpha: int, iterations: int):
-        for i in range(iterations):
-            z = np.dot(X, theta)
-            h = self._logistic_function(z)
-            gradient = np.dot(X.T, (h - y)) / y.shape[0]
-            theta -= alpha * gradient
-
-            z = np.dot(X, theta)
-            h = self._logistic_function(z)
-            loss = self.compute_cost(h, y)
-            return theta, loss

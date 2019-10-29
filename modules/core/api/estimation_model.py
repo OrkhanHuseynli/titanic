@@ -23,9 +23,5 @@ class EstimationModel(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def predict(self, x: ndarray) -> ndarray:
-        pass
-
-    @abc.abstractmethod
     def compute_cost(self, X: ndarray, y: Any, theta: ndarray) -> int:
         pass

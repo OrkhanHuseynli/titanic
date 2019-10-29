@@ -62,10 +62,16 @@ class TestLogisticRegressionUtil(TestCase):
         actual = LogisticRegressionUtil.calculate_true_positive_rate(true_positives, false_negatives)
         self.assertEqual(expected, actual)
 
-
     def test_calculate_false_positive_rate(self):
         true_negatives = 50
         false_positives = 10
         expected = 0.16666666666666666
         actual = LogisticRegressionUtil.calculate_false_positive_rate(false_positives, true_negatives)
+        self.assertEqual(expected, actual)
+
+    def test_calculate_ROC(self):
+        y_predicted = np.array([0, 1, 0, 1, 1])
+        y_actual = np.array([0, 1, 1, 0, 1])
+        expected = [0.6666666666666666, 0.5]
+        actual = LogisticRegressionUtil.calculate_ROC(y_predicted, y_actual)
         self.assertEqual(expected, actual)

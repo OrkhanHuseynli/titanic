@@ -34,12 +34,6 @@ class LinearRegression(EstimationModel):
         # X = np.concatenate((ones, X), axis=1)
         return X @ self._theta.T
 
-    # def predict_on_test_dataset(self):
-    #     data_processor = DatasetProcessor(self.processed_dataset)
-    #     # data_processor.normalize()
-    #     X, y, theta = data_processor.create_matricies_and_theta(self.array_of_X_col, self.y_column_index)
-
-
     def fit(self, alpha, iterations) -> EstimationModel:
         self._theta, self._cost_matrix = self.gradient_descent(alpha, iterations)
         return self
@@ -66,23 +60,3 @@ class LinearRegression(EstimationModel):
     def compute_cost(self, X, y, theta) -> int:
         for_sum = np.power(((X @ theta.T) - y), 2)
         return np.sum(for_sum) / (2 * len(X))
-
-    # def transform_indicies_to_colnames(self, indices):
-    #     for i in range(len(indices)):
-    #         indices[i] = self.dataset.columns[indices[i]]
-    #     return indices
-
-    # @staticmethod
-    # def run_regression(file_name):
-    #     dataset = LinearRegression.__read_dataset__(file_name)
-    #     col = dataset.columns
-    #     print(col)
-    #     print(col[2])
-    #     # initializing our inputs and outputs
-    #     X = dataset[col[2]].values
-    #     print(X)
-    #     # mean of our inputs and outputs
-    #     x_mean = np.mean(X)
-    #     # y_mean = np.mean(Y)
-    #     # Y = dataset['Brain Weight(grams)'].values
-    #
