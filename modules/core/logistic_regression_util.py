@@ -51,7 +51,7 @@ class LogisticRegressionUtil:
         return false_positives / (false_positives + true_negatives)
 
     @staticmethod
-    def calculate_ROC(y_pred: ndarray, y_actual: ndarray) -> list:
+    def calculate_ROC(y_pred: ndarray, y_actual: ndarray) -> (list, list):
         confusion_matrix = LogisticRegressionUtil.get_confusion_matrix(y_pred, y_actual)
         tp = confusion_matrix[0][0]
         fp = confusion_matrix[0][1]
@@ -59,4 +59,4 @@ class LogisticRegressionUtil:
         fn = confusion_matrix[1][1]
         tpr = LogisticRegressionUtil.calculate_true_positive_rate(tp, fn)
         fpr = LogisticRegressionUtil.calculate_false_positive_rate(fp, tn)
-        return [tpr, fpr]
+        return [tpr, fpr], confusion_matrix

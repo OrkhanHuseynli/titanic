@@ -1,12 +1,13 @@
-import os
-from tempfile import gettempdir
+from http import HTTPStatus
 
 from tornado.testing import AsyncHTTPTestCase
 
-import main
+from modules import main
 from modules.core.utils import Utils
 
 _UPLOAD_FILE_NAME_ = 'titanic.csv'
+
+
 class TestApp(AsyncHTTPTestCase):
     def get_app(self):
         return main.make_app()
@@ -34,6 +35,30 @@ class TestApp(AsyncHTTPTestCase):
         file.close()
         Utils.___remove_file___(expected_file_path)
 
+
+    def test_train_for_error(self):
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = self.fetch('/train?filename=test.csv', method='POST', body='{}', headers=headers)
+        self.assertEqual(HTTPStatus.NOT_FOUND, response.code)
+
+
+    def test_train(self):
+        file_name = "titanic.csv"
+        file_name_hashed = Utils.get_hashed_name("titanic.csv")
+        file_name_with_ext = file_name_hashed + ".csv"
+        with open('resources/titanic.csv', 'rb') as test_file:
+            Utils.write_file(file_name_with_ext, test_file.read(), Utils.UPLOADS_FOLDER)
+            headers = {
+                'Content-Type': 'application/json'
+            }
+            response = self.fetch('/train?filename=' + file_name, method='POST', body='{}', headers=headers)
+            self.assertEqual(200, response.code)
+            expected_file_path = Utils.get_stored_file_path(file_name_with_ext, Utils.UPLOADS_FOLDER)
+            Utils.___remove_file___(expected_file_path)
+            
 
     @staticmethod
     def return_body(boundary):

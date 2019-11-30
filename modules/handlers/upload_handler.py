@@ -1,7 +1,6 @@
 import os
 import io
 
-import numpy as np
 import pandas as pd
 from tornado.web import RequestHandler
 
@@ -25,6 +24,6 @@ class UploadHandler(RequestHandler):
         dataset_info.update(operation_info)
         self.finish(dataset_info)
 
-    def _get_data_summary_(self, data:bytes) -> any:
+    def _get_data_summary_(self, data: bytes) -> any:
         dataset = pd.read_csv(io.BytesIO(data))
         return {'dataSize': "{}x{}.".format(dataset.size, len(dataset.columns)), 'columns': list(dataset.columns)}

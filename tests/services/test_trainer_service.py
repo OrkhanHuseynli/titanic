@@ -3,7 +3,7 @@ from unittest import TestCase
 import pandas as pd
 
 from modules.services.api.trainer import Trainer
-from modules.services.trainer_service import TrainerService
+from modules.services.training_service import TrainingService
 
 
 class TestTrainerService(TestCase):
@@ -11,7 +11,7 @@ class TestTrainerService(TestCase):
         alpha = 0.01
         iterations = 1000
         array_of_X_col, y_column_index = [0, 1], 2
-        service: Trainer = TrainerService(self.__get_dataset__("test_data.csv"), array_of_X_col, y_column_index, 0.8, alpha, iterations)
+        service: Trainer = TrainingService(self.__get_dataset__("test_data.csv"), array_of_X_col, y_column_index, 0.8, alpha, iterations)
         service.train()
         print("coeficients : ", service.get_coefs()[0])
         self.assertEqual([0.039826403664998934, 0.9587822599661973, -0.00246734131974181], service.get_coefs()[0].tolist())
@@ -21,8 +21,8 @@ class TestTrainerService(TestCase):
         alpha = 0.01
         iterations = 1000
         array_of_X_col, y_column_index = [0, 1], 2
-        service: Trainer = TrainerService(self.__get_dataset__("test_data.csv"), array_of_X_col, y_column_index, 0.8,
-                                          alpha, iterations)
+        service: Trainer = TrainingService(self.__get_dataset__("test_data.csv"), array_of_X_col, y_column_index, 0.8,
+                                           alpha, iterations)
         service.train()
         actual_score = service.score()
         expected_score = 0.7615686264521379
@@ -32,7 +32,7 @@ class TestTrainerService(TestCase):
         alpha = 0.01
         iterations = 1000
         array_of_X_col, y_column_index = [0, 1], 2
-        service = TrainerService(self.__get_dataset__("test_data.csv"), array_of_X_col, y_column_index, 0.8, alpha, iterations)
+        service = TrainingService(self.__get_dataset__("test_data.csv"), array_of_X_col, y_column_index, 0.8, alpha, iterations)
         service.train()
         # data_processor, lin_reg = self.__get_data_processor_and_lin_reg__("training_data.csv", array_of_X_col,
         # y_column_index) lin_reg.fit(alpha, iterations) data_processor_, lin_reg_ =

@@ -9,7 +9,7 @@ from modules.core.api.estimation_model import EstimationModel
 from modules.services.api.trainer import Trainer
 
 
-class TrainerService(Trainer):
+class TrainingService(Trainer):
     def __init__(self, dataset: DataFrame, array_of_X_col: list, y_column_index: int,
                  training_size: float, alpha: int, iterations: int):
         self.dataset = dataset

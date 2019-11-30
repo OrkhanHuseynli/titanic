@@ -31,7 +31,7 @@ class LogisticRegression(EstimationModel):
         Y[Y <= threshold] = 0
         return Y
 
-    def calculate_roc_point(self, X_actual: np.ndarray, y_actual: np.ndarray, threshold: int) -> list:
+    def calculate_roc_point(self, X_actual: np.ndarray, y_actual: np.ndarray, threshold: int) -> (list, list):
         y_predicted = self.predict(X_actual, threshold)
         return LogisticRegressionUtil.calculate_ROC(y_predicted, y_actual)
 

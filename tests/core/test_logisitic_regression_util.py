@@ -72,6 +72,6 @@ class TestLogisticRegressionUtil(TestCase):
     def test_calculate_ROC(self):
         y_predicted = np.array([0, 1, 0, 1, 1])
         y_actual = np.array([0, 1, 1, 0, 1])
-        expected = [0.6666666666666666, 0.5]
+        expected = [0.6666666666666666, 0.5], [[2, 1], [1, 1]]
         actual = LogisticRegressionUtil.calculate_ROC(y_predicted, y_actual)
         self.assertEqual(expected, actual)
