@@ -11,7 +11,7 @@ from modules.services.log_training_service import LogTrainingService
 class TrainingHandler(RequestHandler):
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
-        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header("Access-Control-Allow-Headers", "content-type")
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
 
     def post(self):

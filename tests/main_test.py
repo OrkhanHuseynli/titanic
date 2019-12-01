@@ -1,12 +1,10 @@
+import json
 from http import HTTPStatus
 
 from tornado.testing import AsyncHTTPTestCase
 
 from modules import main
 from modules.core.utils import Utils
-
-_UPLOAD_FILE_NAME_ = 'titanic.csv'
-
 
 class TestApp(AsyncHTTPTestCase):
     def get_app(self):
@@ -25,7 +23,7 @@ class TestApp(AsyncHTTPTestCase):
             'Content-Type': 'multipart/form-data; boundary=%s' % boundary
         }
 
-        response = self.fetch('/uploads', method='POST', headers=headers, body=self.return_body(boundary))
+        response = self.fetch('/api/v1/upload', method='POST', headers=headers, body=self.return_body(boundary))
         self.assertEqual(200, response.code)
         file_name = Utils.get_hashed_name("titanic.csv")
         file_name_with_ext = file_name + ".csv"
@@ -41,7 +39,7 @@ class TestApp(AsyncHTTPTestCase):
             'Content-Type': 'application/json'
         }
 
-        response = self.fetch('/train?filename=test.csv', method='POST', body='{}', headers=headers)
+        response = self.fetch('/api/v1/train?filename=test.csv', method='POST', body='{}', headers=headers)
         self.assertEqual(HTTPStatus.NOT_FOUND, response.code)
 
 
@@ -54,11 +52,35 @@ class TestApp(AsyncHTTPTestCase):
             headers = {
                 'Content-Type': 'application/json'
             }
-            response = self.fetch('/train?filename=' + file_name, method='POST', body='{}', headers=headers)
+            response = self.fetch('/api/v1/train?filename=' + file_name, method='POST', body='{}', headers=headers)
             self.assertEqual(200, response.code)
+            expected = ([[-0.5535714285714286, 0.5],
+                         [-0.5178571428571429, 0.4941860465116279],
+                         [0.25, 0.3387096774193548],
+                         [0.4642857142857143, 0.2777777777777778],
+                         [0.6428571428571429, 0.20833333333333334],
+                         [0.7321428571428571, 0.1724137931034483],
+                         [0.8928571428571429, 0.08108108108108109],
+                         [1.0, 0.0],
+                         [1.0, 0.0],
+                         [1.0, 0.0],
+                         [1.0, 0.0]],
+                        [[[-31, 87], [87, 87]],
+                         [[-29, 85], [87, 85]],
+                         [[14, 42], [82, 42]],
+                         [[26, 30], [78, 30]],
+                         [[36, 20], [76, 20]],
+                         [[41, 15], [72, 15]],
+                         [[50, 6], [68, 6]],
+                         [[56, 0], [59, 0]],
+                         [[56, 0], [52, 0]],
+                         [[56, 0], [33, 0]],
+                         [[56, 0], [31, 0]]])
+            self.assertEqual(expected[0], json.loads(response.body)['roc_list'])
+            self.assertEqual(expected[1], json.loads(response.body)['conf_matrix_list'])
             expected_file_path = Utils.get_stored_file_path(file_name_with_ext, Utils.UPLOADS_FOLDER)
             Utils.___remove_file___(expected_file_path)
-            
+
 
     @staticmethod
     def return_body(boundary):

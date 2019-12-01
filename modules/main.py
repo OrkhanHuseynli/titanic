@@ -11,8 +11,8 @@ define('port', default=8888, help='port to listen on')
 
 def make_app():
     return tornado.web.Application([
-        (r"/uploads", UploadHandler),
-        (r"/train", TrainingHandler)
+        (r"/api/v1/upload", UploadHandler),
+        (r"/api/v1/train", TrainingHandler)
     ])
 
 
