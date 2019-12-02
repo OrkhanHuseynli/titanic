@@ -4,23 +4,23 @@ from numpy import ndarray
 class LogisticRegressionUtil:
     @staticmethod
     def get_confusion_matrix(y_pred: ndarray, y_actual: ndarray) -> list:
-        positives = 0
-        negatives = 0
-        for item in y_actual:
-            if item == 1:
-                positives = positives + 1
-            elif item == 0:
-                negatives = negatives + 1
+        tp = 0
+        tn = 0
+        fn = 0
+        fp = 0
+        for i in range(len(y_pred)):
+            if y_pred[i] == y_actual[i]:
+                if y_pred[i] == 1:
+                    tp = tp + 1
+                else:
+                    tn = tn + 1
+            else:
+                if y_pred[i] == 1:
+                    fp = fp + 1
+                else:
+                    fn = fn + 1
 
-        result = y_pred - y_actual
-        false_positives = 0
-        false_negatives = 0
-        for item in result:
-            if item == 1:
-                false_positives = false_positives + 1
-            elif item == -1:
-                false_negatives = false_negatives + 1
-        return [[positives - false_positives, false_positives], [negatives - false_negatives, false_positives]]
+        return [[tp, fp], [tn, fn]]
 
     @staticmethod
     def calculate_accuracy(true_positives: int, false_positives: int,

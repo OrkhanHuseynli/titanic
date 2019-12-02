@@ -74,6 +74,7 @@ class LogTrainingService(Trainer):
         thresholds_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
         roc_list = [None] * len(thresholds_list)
         conf_matrix_list = [None] * len(thresholds_list)
+        print("calculating roc")
         for i in range(len(thresholds_list)):
             roc_list[i], conf_matrix_list[i] = log_reg.calculate_roc_point(X_test_actual, y_test_actual, thresholds_list[i])
         return roc_list, conf_matrix_list

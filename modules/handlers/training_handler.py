@@ -19,7 +19,7 @@ class TrainingHandler(RequestHandler):
         extn = os.path.splitext(file_name)[1]
         cname = Utils.get_hashed_name(file_name) + extn
         alpha = 0.01
-        iterations = 1000
+        iterations = 10000
         testing_size = 0.8
         tuple_of_X_col, y_column_index = (3, 4, 5, 6, 7), 2
         service = LogTrainingService()
