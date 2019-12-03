@@ -17,15 +17,15 @@ from modules.services.api.trainer import Trainer
 
 class LogTrainingService(Trainer):
     def __init__(self):
-    # def __init__(self, dataset: DataFrame, array_of_X_col: list, y_column_index: int,
-    #              training_size: float, alpha: int, iterations: int):
-    #     self.dataset = dataset
-    #     self.training_size = training_size
-    #     self.alpha = alpha
-    #     self.iterations = iterations
-    #     self.array_of_X_col = array_of_X_col
-    #     self.y_column_index = y_column_index
-    #     self.training_frame, self.testing_frame = self.__split_dataset__(dataset, training_size)
+        # def __init__(self, dataset: DataFrame, array_of_X_col: list, y_column_index: int,
+        #              training_size: float, alpha: int, iterations: int):
+        #     self.dataset = dataset
+        #     self.training_size = training_size
+        #     self.alpha = alpha
+        #     self.iterations = iterations
+        #     self.array_of_X_col = array_of_X_col
+        #     self.y_column_index = y_column_index
+        #     self.training_frame, self.testing_frame = self.__split_dataset__(dataset, training_size)
         self._coeficients = None
         self._predicted_outcome = None
         self._cost_matrix = None
@@ -54,7 +54,8 @@ class LogTrainingService(Trainer):
     def predict(self, X: ndarray):
         return None
 
-    def train(self, filename: string, testing_size: int, alpha: int, iterations: int,   array_of_X_col: tuple, y_column_index: int):
+    def train(self, filename: string, testing_size: int, alpha: int, iterations: int, array_of_X_col: tuple,
+              y_column_index: int) -> (list, list, list):
         # 1 split data into training and testing data
         try:
             dataset = self.__get_raw_data__(filename)
@@ -71,13 +72,14 @@ class LogTrainingService(Trainer):
         X_test_actual, y_test_actual, _ = data_processor_testing_frame.create_matricies_and_theta_for_binary_output(
             list(array_of_X_col), y_column_index)
         # 4 calculate roc points for a list of thresholds on test set
-        thresholds_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+        thresholds_list = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
         roc_list = [None] * len(thresholds_list)
         conf_matrix_list = [None] * len(thresholds_list)
         print("calculating roc")
         for i in range(len(thresholds_list)):
-            roc_list[i], conf_matrix_list[i] = log_reg.calculate_roc_point(X_test_actual, y_test_actual, thresholds_list[i])
-        return roc_list, conf_matrix_list
+            roc_list[i], conf_matrix_list[i] = log_reg.calculate_roc_point(X_test_actual, y_test_actual,
+                                                                           thresholds_list[i])
+        return roc_list, conf_matrix_list, thresholds_list
 
     def __get_raw_data__(self, file_name) -> DataFrame:
         test_file_path = os.path.join(gettempdir(), Utils.UPLOADS_FOLDER, file_name)

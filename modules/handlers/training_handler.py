@@ -24,11 +24,12 @@ class TrainingHandler(RequestHandler):
         tuple_of_X_col, y_column_index = (3, 4, 5, 6, 7), 2
         service = LogTrainingService()
         try:
-            result = service.train(cname, testing_size, alpha, iterations, tuple_of_X_col, y_column_index)
+            roc_list, conf_matrix_list, thresholds_list = service.train(cname, testing_size, alpha, iterations, tuple_of_X_col, y_column_index)
         except OSError:
             raise HTTPError(HTTPStatus.NOT_FOUND, 'Corresponding file does not exist for training : ' + file_name)
         operation_info = {'operation': 'training',
                           'fileName': file_name,
-                          'roc_list': result[0],
-                          'conf_matrix_list': result[1]}
+                          'rocList': roc_list,
+                          'confMatrixList': conf_matrix_list,
+                          'thresholdList': thresholds_list}
         self.finish(operation_info)
