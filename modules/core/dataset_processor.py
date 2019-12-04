@@ -21,7 +21,6 @@ class DatasetProcessor:
         self.dataset = (self.dataset - self.dataset.mean()) / self.dataset.std()
         return self
 
-
     def _normalize_dataset(self, dataset) -> DataFrame:
         return (dataset - dataset.mean()) / dataset.std()
 

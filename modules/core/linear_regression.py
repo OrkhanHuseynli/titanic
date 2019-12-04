@@ -30,8 +30,6 @@ class LinearRegression(EstimationModel):
         return r2
 
     def predict(self, X):
-        # ones = np.ones([X.shape[0], 1])
-        # X = np.concatenate((ones, X), axis=1)
         return X @ self._theta.T
 
     def fit(self, alpha, iterations) -> EstimationModel:

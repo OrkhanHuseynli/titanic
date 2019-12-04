@@ -20,6 +20,15 @@ class LogisticRegression(EstimationModel):
         self._X_actual = None
         self._y_actual = None
 
+    def get_X_actual(self):
+        return self._X_actual
+
+    def get_y_actual(self):
+        return self._y_actual
+
+    def get_coefs(self):
+        return self._theta
+
     def score(self):
         y_predicted = self.predict(self._X_actual, 0.5)
         return self._score_(y_predicted, self._y_actual)
@@ -38,15 +47,6 @@ class LogisticRegression(EstimationModel):
     def fit(self, alpha, iterations) -> EstimationModel:
         self._theta, self._cost_matrix = self.gradient_descent(alpha, iterations)
         return self
-
-    def get_X_actual(self):
-        return self._X_actual
-
-    def get_y_actual(self):
-        return self._y_actual
-
-    def get_coefs(self):
-        return self._theta
 
     def get_cost_matrix(self):
         return self._cost_matrix

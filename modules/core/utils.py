@@ -29,15 +29,16 @@ class Utils:
         file_path = os.path.join(gettempdir(), file_dir, file_name)
         return open(file_path, "rb")
 
-    @staticmethod
-    def ___remove_file___(file_path):
-        if os.path.exists(file_path):
-            os.remove(file_path)
 
     @staticmethod
     def remove_file(file_name, file_dir):
         file_path = os.path.join(gettempdir(), file_dir, file_name)
         Utils.___remove_file___(file_path)
+
+    @staticmethod
+    def ___remove_file___(file_path):
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
     @staticmethod
     def get_hashed_name(file_name):
