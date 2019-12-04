@@ -18,6 +18,9 @@ class TrainingHandler(RequestHandler):
         file_name=self.get_argument("filename", None, True)
         extn = os.path.splitext(file_name)[1]
         cname = Utils.get_hashed_name(file_name) + extn
+        # in an extended version of the app
+        # these parameters, including independent and dependent params
+        # can be selected from UI
         alpha = 0.01
         iterations = 10000
         testing_size = 0.8
