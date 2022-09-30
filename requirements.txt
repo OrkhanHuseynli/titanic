@@ -1,5 +1,5 @@
 decorator==4.4.0
-joblib==0.13.2
+joblib==1.2.0
 numpy==1.17.2
 pandas==0.25.1
 public==2019.4.13
